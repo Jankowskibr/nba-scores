@@ -1,36 +1,36 @@
-const express = require('express');
-const axios = require('axios');
-const app = express();
-const PORT = process.env.PORT || 3000;
+document.addEventListener("DOMContentLoaded", () => {
+  const url = "https://nba-scores-worker.jankowskibr.workers.dev/scores";
+  const scoresDiv = document.getElementById("scores");
 
-app.use(express.static('public'));
+  console.log("Fetching from:", url);
 
-app.get('/scores', async (req, res) => {
-  try {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yyyy = yesterday.getFullYear();
-    const mm = String(yesterday.getMonth() + 1).padStart(2, '0');
-    const dd = String(yesterday.getDate()).padStart(2, '0');
-    const dateStr = `${yyyy}-${mm}-${dd}`;
+  fetch(url)
+    .then(res => {
+      console.log("Raw response:", res);
+      return res.text(); // read the response as plain text for debugging
+    })
+    .then(text => {
+      console.log("Raw text body:", text);
 
-    const url = `https://nba-scores-worker.jankowskibr.workers.dev/scores`;
-    console.log('Fetching from:', url);
+      try {
+        const data = JSON.parse(text);
 
-    const response = await axios.get(url, {
-      headers: {
-        'Authorization': '84ca0154-9d7e-46e9-9f63-2495fd4cb273'
+        if (data.games && data.games.length > 0) {
+          data.games.forEach(game => {
+            const p = document.createElement("p");
+            p.textContent = `${game.home_team.full_name} ${game.home_team_score} - ${game.visitor_team.full_name} ${game.visitor_team_score}`;
+            scoresDiv.appendChild(p);
+          });
+        } else {
+          scoresDiv.textContent = "No games found.";
+        }
+      } catch (err) {
+        console.error("JSON parse error:", err);
+        scoresDiv.textContent = "Error loading scores.";
       }
+    })
+    .catch(err => {
+      console.error("Fetch error:", err);
+      scoresDiv.textContent = "Failed to fetch scores.";
     });
-
-    const games = response.data.data;
-    res.json({ games });
-  } catch (err) {
-    console.error('Error fetching games:', err);
-    res.status(500).send('Failed to fetch NBA scores');
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });
