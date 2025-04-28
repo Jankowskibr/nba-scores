@@ -7,26 +7,21 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch(url)
     .then(res => {
       console.log("Raw response:", res);
-      return res.text(); // read the response as plain text for debugging
+      return res.json(); // Directly parse as JSON (no need to use .text())
     })
-    .then(text => {
-      console.log("Raw text body:", text);
+    .then(data => {
+      console.log("Fetched data:", data);  // Check the structure of the data
 
-      try {
-        const data = JSON.parse(text);
-
-        if (data.games && data.games.length > 0) {
-          data.games.forEach(game => {
-            const p = document.createElement("p");
-            p.textContent = `${game.home_team.full_name} ${game.home_team_score} - ${game.visitor_team.full_name} ${game.visitor_team_score}`;
-            scoresDiv.appendChild(p);
-          });
-        } else {
-          scoresDiv.textContent = "No games found.";
-        }
-      } catch (err) {
-        console.error("JSON parse error:", err);
-        scoresDiv.textContent = "Error loading scores.";
+      if (data && data.games && data.games.length > 0) {
+        // If there are games, display them
+        data.games.forEach(game => {
+          const p = document.createElement("p");
+          p.textContent = `${game.home_team.full_name} ${game.home_team_score} - ${game.visitor_team.full_name} ${game.visitor_team_score}`;
+          scoresDiv.appendChild(p);
+        });
+      } else {
+        // If no games found
+        scoresDiv.textContent = "No games found.";
       }
     })
     .catch(err => {
