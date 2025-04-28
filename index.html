@@ -2,9 +2,38 @@
 <html>
 <head>
   <title>NBA Scoreboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    #yesterday-scores, #tonight-scores {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #yesterday-scores {
+      background-color: #f9f9f9;
+    }
+    #tonight-scores {
+      background-color: #e6f3ff;
+    }
+    p {
+      margin: 5px 0;
+    }
+  </style>
 </head>
 <body>
-  <div id="scores">Loading...</div>
+  <h2>Yesterday's Games</h2>
+  <div id="yesterday-scores">Loading...</div>
+  <h2>Tonight's Games</h2>
+  <div id="tonight-scores">Loading...</div>
   <script src="index.js"></script>
 </body>
 </html>
