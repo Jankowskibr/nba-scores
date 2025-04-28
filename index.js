@@ -14,7 +14,7 @@ app.get('/scores', async (req, res) => {
     const dd = String(yesterday.getDate()).padStart(2, '0');
     const dateStr = `${yyyy}-${mm}-${dd}`;
 
-    const url = `https://nba-scores-worker.jankowskibr.workers.dev/`;
+    const url = `https://nba-scores-worker.jankowskibr.workers.dev/scores`;
     console.log('Fetching from:', url);
 
     const response = await axios.get(url, {
