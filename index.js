@@ -14,7 +14,7 @@ app.get('/scores', async (req, res) => {
     const dd = String(yesterday.getDate()).padStart(2, '0');
     const dateStr = `${yyyy}-${mm}-${dd}`;
 
-    const url = `https://api.balldontlie.io/v1/games?start_date=${dateStr}&end_date=${dateStr}`;
+    const url = `https://nba-scores-worker.jankowskibr.workers.dev/`;
     console.log('Fetching from:', url);
 
     const response = await axios.get(url, {
